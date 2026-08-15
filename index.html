@@ -200,7 +200,7 @@
 
   .replay{
     position: fixed;
-    bottom: clamp(1.2rem, 4vh, 2.5rem);
+    bottom: clamp(3.4rem, 10vh, 5.2rem);
     left: 50%;
     transform: translateX(-50%);
     z-index: 4;
@@ -217,6 +217,31 @@
     opacity: 0;
     backdrop-filter: blur(6px);
     transition: background 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+  }
+
+  .credits{
+    position: fixed;
+    bottom: clamp(1rem, 3.2vh, 1.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: clamp(0.62rem, 1.35vw, 0.75rem);
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+    color: var(--cream-dim);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .credits .credits-main{
+    font-weight: 500;
+    color: rgba(251,239,219,0.72);
+  }
+  .credits .credits-sub{
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(217,201,171,0.55);
   }
   .replay:hover{
     background: rgba(251,239,219,0.14);
@@ -261,6 +286,10 @@
 </div>
 
 <button class="replay" aria-label="Replay the animation">Phir se dekho ↺</button>
+<p class="credits">
+  <span class="credits-main">Built, designed, and deployed by Shashwat Kashyap</span><br>
+  <span class="credits-sub">With the support of Aditya Krishan (Muku)</span>
+</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -520,6 +549,7 @@
   var stamp = document.querySelector('.stamp');
   var inkSplat = document.querySelector('.ink-splat');
   var replayBtn = document.querySelector('.replay');
+  var credits = document.querySelector('.credits');
   var stageEl = document.querySelector('.stage');
 
   function resetVisual(){
@@ -532,6 +562,7 @@
     gsap.set(stamp, { opacity: 0, y: -260, rotate: -22, scale: 1.35 });
     gsap.set(flash, { opacity: 0 });
     gsap.set(replayBtn, { opacity: 0 });
+    gsap.set(credits, { opacity: 0 });
   }
 
   function shakeScreen(){
@@ -554,7 +585,7 @@
     confettiMat.opacity = 0;
 
     if (reduceMotion){
-      gsap.set([eyebrow, line1, line2, inkSplat, stamp, replayBtn], { opacity: 1 });
+      gsap.set([eyebrow, line1, line2, inkSplat, stamp, replayBtn, credits], { opacity: 1 });
       gsap.set(inkSplat, { scale: 1 });
       gsap.set(stamp, { y: 0, rotate: -6, scale: 1 });
       return;
@@ -590,7 +621,8 @@
         duration: 0.45, ease: 'power4.in'
       }, '<0.05')
       .call(function(){ shakeScreen(); triggerBurst(); })
-      .to(replayBtn, { opacity: 1, duration: 0.5 }, '>0.2');
+      .to(replayBtn, { opacity: 1, duration: 0.5 }, '>0.2')
+      .to(credits, { opacity: 1, duration: 0.6 }, '<0.1');
   }
 
   replayBtn.addEventListener('click', playIntro);
